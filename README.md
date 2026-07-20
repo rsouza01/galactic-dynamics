@@ -39,6 +39,8 @@ Steps to download and install dependencies for local development
 
 - Run `pip install -e . && pip install -r requirements.txt`
 
+### Tests
+  `python -m unittest discover -s tests`
 
 ## Goal
 

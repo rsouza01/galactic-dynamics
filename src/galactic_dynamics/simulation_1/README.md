@@ -75,27 +75,13 @@ It needs acceleration.
 
 Compute:
 
-$$
-\vec a
-=
--\nabla \Phi
-$$
+$$\vec a = -\nabla \Phi$$
 
 Result:
 
-$$
-a_x
-=
--\frac{GMx}
-{(r^2+a^2)^{3/2}}
-$$
+$$a_x = -\frac{GMx}{(r^2+a^2)^{3/2}}$$
 
-$$
-a_y
-=
--\frac{GMy}
-{(r^2+a^2)^{3/2}}
-$$
+$$a_y = -\frac{GMy} {(r^2+a^2)^{3/2}}$$
 
 ***
 
@@ -178,11 +164,7 @@ This concept later becomes enormously important for bars.
 
 Compute every timestep:
 
-$$
-E
-=
-\frac12v^2+\Phi
-$$
+$$E = \frac12v^2+\Phi$$
 
 Plot:
 
@@ -209,9 +191,7 @@ This is your first diagnostic tool.
 
 Calculate
 
-$$
-L_z=xv_y-yv_x
-$$
+$$L_z=xv_y-yv_x$$
 
 Plot:
 
@@ -360,9 +340,7 @@ r = [0.1 ... 20]
 
 For each radius compute:
 
-$$
-v_c(r)
-$$
+$$v_c(r)$$
 
 Plot
 
@@ -392,11 +370,7 @@ Later you'll use this everywhere.
 
 Calculate:
 
-$$
-\Omega(r)
-=
-v_c(r)/r
-$$
+$$\Omega(r) = v_c(r)/r$$
 
 Plot.
 

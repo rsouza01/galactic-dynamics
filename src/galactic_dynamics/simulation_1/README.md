@@ -51,11 +51,7 @@ The math is easy.
 
 Potential:
 
-$$
-\Phi(r)
-=
--\frac{GM}{\sqrt{r^2+a^2}}
-$$
+$$\Phi(r) = -\frac{GM}{\sqrt{r^2+a^2}}$$
 
 Choose:
 

@@ -243,11 +243,7 @@ Don't.
 
 Find:
 
-$$
-v_c(r)
-=
-\sqrt{r \frac{d\Phi}{dr}}
-$$
+$$v_c(r)=\sqrt{r \frac{d\Phi}{dr}}$$
 
 At:
 
@@ -356,11 +352,7 @@ circular velocity
 
 Every resonance in barred dynamics depends on:
 
-$$
-\Omega(r)
-=
-\frac{v_c(r)}{r}
-$$
+$$\Omega(r)=\frac{v_c(r)}{r}$$
 
 Later you'll use this everywhere.
 

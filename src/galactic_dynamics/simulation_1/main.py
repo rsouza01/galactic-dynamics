@@ -30,6 +30,13 @@ def acceleration(x, y, G=1.0, M=1.0, scale_a=1.0):
     return prefactor * x, prefactor * y
 
 # =============================================================================
+# Angular momemtum
+# =============================================================================
+def angular_momentum_z(state, G=1.0, M=1.0, scale_a=1.0):
+    x, y, vx, vy = state
+    return x*vy - y*vx
+
+# =============================================================================
 # State Derivative Function (dS/dt)
 # =============================================================================
 def state_derivatives(state, G=1.0, M=1.0, scale_a=1.0):
@@ -73,15 +80,18 @@ def run_simulation(current_state, n_steps, dt):
     x_history = np.zeros(n_steps)
     y_history = np.zeros(n_steps)
     energy_history = np.zeros(n_steps)
+    l_z_history = np.zeros(n_steps)
     
     # Time Integration Loop
     for i in range(n_steps):
         x_history[i] = current_state[0]
         y_history[i] = current_state[1]
         energy_history[i] = energy(current_state, G, M, scale_a)
+        l_z_history[i] = angular_momentum_z(current_state, G, M, scale_a)
+
         current_state = rk4_step(current_state, dt, G, M, scale_a)
         
-    return x_history, y_history, energy_history
+    return x_history, y_history, energy_history, l_z_history
 
 
 def run():
@@ -100,7 +110,8 @@ def run():
     
     current_state = np.array([x0, y0, vx0, vy0])
 
-    x_traj, y_traj, energy_traj = run_simulation(current_state, n_steps, dt)
+    x_traj, y_traj, energy_traj, l_z_traj = run_simulation(current_state, n_steps, dt)
     plots.plot_orbit(x_traj, y_traj)
     plots.plot_relative_energy(energy_traj)
     plots.plot_energy(dt, energy_traj)
+    plots.plot_angular_momentum_z(dt, l_z_traj)

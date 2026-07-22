@@ -4,6 +4,36 @@ import os
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
+
+def plot_angular_momentum_z(dt, l_z_traj, filename="plot_angular_momentum_z_vs_time.png"):
+
+    n_steps = len(l_z_traj)
+
+    # Time array corresponding to each step
+    t_array = np.arange(n_steps) * dt
+
+    plt.figure(figsize=(8, 4), dpi=150)
+    plt.plot(t_array, l_z_traj, color='crimson', lw=1.2, label=r"$L_Z(t)$")
+
+    plt.xlabel(r"Time $t$")
+    plt.ylabel(r"L_Z $E(t)$")
+    plt.title("L_z over Time")
+    plt.grid(True, linestyle="--", alpha=0.5)
+
+    # Force Matplotlib to show offset scientific notation on y-axis 
+    # to highlight variations at the 10^-12 level
+    plt.ticklabel_format(useOffset=False, axis='y')
+    plt.ylim(0.88, 0.91)  # Set explicit physical bounds
+    plt.tight_layout()
+
+    saved_filename = os.path.join(script_dir, filename)
+
+    plt.savefig(saved_filename, bbox_inches='tight')
+    plt.close()
+
+    print(f"Plot successfully saved as '{saved_filename}'")
+
+
 def plot_energy(dt, energy_history, filename="plot_energy_vs_time.png"):
 
     n_steps = len(energy_history)

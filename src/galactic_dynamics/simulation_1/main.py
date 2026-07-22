@@ -4,6 +4,9 @@ import os
 
 import galactic_dynamics.simulation_1.plots as plots
 
+# Parameters
+G, M, scale_a = 1.0, 1.0, 1.0
+
 # Time settings
 n_steps = 18000
 dt = 0.01
@@ -62,24 +65,10 @@ def energy(state, G=1.0, M=1.0, scale_a=1.0):
 # =============================================================================
 # Main Simulation & Orbit Integration
 # =============================================================================
-def run_simulation(n_steps, dt):
-    # Parameters
-    G, M, scale_a = 1.0, 1.0, 1.0
+def run_simulation(current_state, n_steps, dt):
     
     t_max = n_steps * dt  # Total simulated time = 10.0
-    
-    # Initial conditions: Position r0 = (2.0, 0.0)
-    x0, y0 = 2.0, 0.0
-    
-    # Circular velocity at r0=2.0 would be v_circ = sqrt(G*M*r^2 / (r^2 + a^2)^(3/2))
-    v_circ = np.sqrt((G * M * x0**2) / ((x0**2 + scale_a**2)**1.5))
-    
-    # Set tangential velocity slightly sub-circular (0.75 * v_circ) to trigger precession
-    vx0 = 0.0
-    vy0 = 0.75 * v_circ
-    
-    current_state = np.array([x0, y0, vx0, vy0])
-    
+
     # Arrays to store orbit trajectory for plotting
     x_history = np.zeros(n_steps)
     y_history = np.zeros(n_steps)
@@ -99,7 +88,19 @@ def run():
     """Run simulation 1."""
     print("Run simulation 1")
 
-    x_traj, y_traj, energy_traj = run_simulation(n_steps, dt)
+    # Initial conditions: Position r0 = (2.0, 0.0)
+    x0, y0 = 2.0, 0.0
+    
+    # Circular velocity at r0=2.0 would be v_circ = sqrt(G*M*r^2 / (r^2 + a^2)^(3/2))
+    v_circ = np.sqrt((G * M * x0**2) / ((x0**2 + scale_a**2)**1.5))
+    
+    # Set tangential velocity slightly sub-circular (0.75 * v_circ) to trigger precession
+    vx0 = 0.0
+    vy0 = 0.75 * v_circ
+    
+    current_state = np.array([x0, y0, vx0, vy0])
+
+    x_traj, y_traj, energy_traj = run_simulation(current_state, n_steps, dt)
     plots.plot_orbit(x_traj, y_traj)
     plots.plot_relative_energy(energy_traj)
     plots.plot_energy(dt, energy_traj)

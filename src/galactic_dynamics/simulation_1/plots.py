@@ -4,7 +4,7 @@ import os
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
-def plot_energy(dt, energy_history, filename="./energy_vs_time.png"):
+def plot_energy(dt, energy_history, filename="plot_energy_vs_time.png"):
 
     n_steps = len(energy_history)
 
@@ -32,7 +32,7 @@ def plot_energy(dt, energy_history, filename="./energy_vs_time.png"):
 
     print(f"Plot successfully saved as '{saved_filename}'")
 
-def plot_relative_energy(energy_history, filename="./relative_energy.png"):
+def plot_relative_energy(energy_history, filename="plot_relative_energy.png"):
     # Relative energy error relative to initial value E_0
     rel_energy_error = (energy_history - energy_history[0]) / abs(energy_history[0])
 
@@ -49,7 +49,7 @@ def plot_relative_energy(energy_history, filename="./relative_energy.png"):
     plt.close()
     print(f"Plot successfully saved as '{saved_filename}'")
 
-def plot_orbit(x, y, filename="./plummer_orbit.png"):
+def plot_orbit(x, y, filename="plot_plummer_orbit.png"):
     plt.figure(figsize=(7, 7), dpi=300)
     
     # Plot central core marker

@@ -2,7 +2,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
+import galactic_dynamics.simulation_1.plots as plots
+
+# Time settings
+n_steps = 18000
+dt = 0.01
+
 
 # =============================================================================
 # Plummer Potential
@@ -57,13 +62,10 @@ def energy(state, G=1.0, M=1.0, scale_a=1.0):
 # =============================================================================
 # Main Simulation & Orbit Integration
 # =============================================================================
-def run_simulation():
+def run_simulation(n_steps, dt):
     # Parameters
     G, M, scale_a = 1.0, 1.0, 1.0
     
-    # Time settings
-    n_steps = 18000
-    dt = 0.01
     t_max = n_steps * dt  # Total simulated time = 10.0
     
     # Initial conditions: Position r0 = (2.0, 0.0)
@@ -92,58 +94,12 @@ def run_simulation():
         
     return x_history, y_history, energy_history
 
-# =============================================================================
-# 5. Plotting & Saving to Disk
-# =============================================================================
-def plot_energy(energy_history, filename="./energy.png"):
-    # Relative energy error relative to initial value E_0
-    rel_energy_error = (energy_history - energy_history[0]) / abs(energy_history[0])
-
-    # Save to disk
-    saved_filename = os.path.join(script_dir, filename)
-
-    plt.figure(figsize=(8, 4), dpi=150)
-    plt.plot(rel_energy_error, color='crimson', lw=1.2)
-    plt.xlabel("Step")
-    plt.ylabel(r"$(E(t) - E_0) / |E_0|$")
-    plt.title("RK4 Relative Energy Conservation Drift")
-    plt.grid(True, linestyle="--", alpha=0.5)
-    plt.savefig(saved_filename, bbox_inches='tight')
-    plt.close()
-    print(f"Plot successfully saved as '{saved_filename}'")
-
-def plot_and_save(x, y, filename="./plummer_orbit.png"):
-    plt.figure(figsize=(7, 7), dpi=300)
-    
-    # Plot central core marker
-    plt.plot(0, 0, 'k*', markersize=12, label="Cluster Center")
-    
-    # Plot orbit history
-    plt.plot(x, y, color='tab:blue', lw=1.2, label="Star Trajectory")
-    plt.plot(x[0], y[0], 'go', label="Initial Position")
-    
-    plt.axhline(0, color='gray', linestyle=':', alpha=0.5)
-    plt.axvline(0, color='gray', linestyle=':', alpha=0.5)
-    
-    plt.xlabel(r"$x \quad [a]$")
-    plt.ylabel(r"$y \quad [a]$")
-    plt.title("Stellar Orbit in a Plummer Potential")
-    plt.gca().set_aspect('equal', adjustable='box')
-    plt.grid(True, linestyle='--', alpha=0.4)
-    plt.legend(loc="upper right")
-
-    # Save to disk
-    saved_filename = os.path.join(script_dir, filename)
-
-    plt.tight_layout()
-    plt.savefig(saved_filename, bbox_inches='tight')
-    plt.close()
-    print(f"Plot successfully saved as '{saved_filename}'")
 
 def run():
     """Run simulation 1."""
     print("Run simulation 1")
 
-    x_traj, y_traj, energy_traj = run_simulation()
-    plot_and_save(x_traj, y_traj)
-    plot_energy(energy_traj)
+    x_traj, y_traj, energy_traj = run_simulation(n_steps, dt)
+    plots.plot_orbit(x_traj, y_traj)
+    plots.plot_relative_energy(energy_traj)
+    plots.plot_energy(dt, energy_traj)

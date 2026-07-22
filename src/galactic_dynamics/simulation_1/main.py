@@ -111,7 +111,16 @@ def run():
     current_state = np.array([x0, y0, vx0, vy0])
 
     x_traj, y_traj, energy_traj, l_z_traj = run_simulation(current_state, n_steps, dt)
+    print("Plotting orbit...")
     plots.plot_orbit(x_traj, y_traj)
+
+    print("Plotting relative energy...")
     plots.plot_relative_energy(energy_traj)
+
+    print("Plotting energy...")
     plots.plot_energy(dt, energy_traj)
+
+    print("Plotting angular momentum...")
     plots.plot_angular_momentum_z(dt, l_z_traj)
+
+    print("Done.")

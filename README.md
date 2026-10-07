@@ -1,716 +1,152 @@
-# From Galactic Dynamics to Barred Galaxy Simulations
+# Galactic Dynamics Study Program
+
+**Focus:** barred spiral galaxies, globular clusters and elliptical galaxies.
+**Method:** the same philosophy as the moons guide. Easy to hard, every module ends with numbers you must reproduce, and everything is built in Python.
+**Main references:** Binney and Tremaine, *Galactic Dynamics* (B&T, 2nd edition assumed), and Sparke and Gallagher, *Galaxies in the Universe: An Introduction* (S&G).
+
+> **Honesty note.** Chapter numbers for B&T (2nd ed.) are given where I am fairly sure of them. For S&G I give **topics**, not chapter numbers, because numbering differs between editions and I don't want to send you to the wrong chapter. Module 01 starts with a task that builds the exact mapping from your own copies. All numeric values and paper citations are from memory: treat them as *approximate, verify before relying on them*.
 
 ---
 
+## 1. How the program is organized
 
-## Badges
+There are 13 modules plus a reference appendix. Each module file has the same skeleton:
 
-![Python](https://img.shields.io/badge/python-3.12-blue?logo=python)
-![Linux](https://img.shields.io/badge/platform-linux-lightgrey?logo=linux)
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+1. **Goal**: what you can do afterwards.
+2. **Prerequisites** and **Reading** (B&T chapters, S&G topics, papers).
+3. **Concepts and key equations**.
+4. **Hands-on problems**, tagged `[E]` easy, `[M]` medium, `[H]` hard.
+5. **Checks**: numbers to reproduce. If you can't, don't move on.
+6. **Pitfalls** and **Gate questions** (self-test without notes).
+7. **Deliverable** (what goes into your repo).
 
-![Maintained](https://img.shields.io/badge/Maintained-Yes-green)
-![Last Commit](https://img.shields.io/github/last-commit/rsouza01/galactic-dynamics)
+| # | Module | Difficulty | Main subject served | Weeks (5 to 6 h/week) |
+| --- | --- | --- | --- | --- |
+| 01 | Foundations: scales, units, Python toolkit | Easy | all | 1 |
+| 02 | Potential theory and galaxy mass models | Easy to medium | all | 2 |
+| 03 | Orbits in spherical and axisymmetric potentials | Medium | all | 3 |
+| 04 | Rotation curves and mass decomposition | Medium | spirals | 2 |
+| 05 | Stellar dynamics of disks | Medium | spirals, bars | 3 |
+| 06 | N-body simulations and numerical Python | Medium to hard | all | 3 |
+| 07 | Barred galaxies: observations and formation | Medium | bars | 2 |
+| 08 | Orbits in bars | Hard | bars | 3 |
+| 09 | Resonances and perturbation theory | Hard | bars, GCs | 3 |
+| 10 | Secular evolution | Hard | bars | 3 |
+| 11 | Collisionless equilibria and elliptical galaxies | Hard | ellipticals | 3 |
+| 12 | Globular clusters and collisional dynamics | Hard | GCs | 3 |
+| 13 | Capstone project | Hard | all | 8 to 10 |
 
-![Made with Love](https://img.shields.io/badge/made%20with-%E2%9D%A4-red)![Powered by Coffee](https://img.shields.io/badge/powered%20by-coffee-brown)
+That is about 11 to 12 months at 5 to 6 hours a week. Tell me your real pace and I will rescale it.
 
+### Your topics mapped to modules
 
-## Local build (with virtual environment)
+| Your topic | Modules |
+| --- | --- |
+| Barred spiral galaxies | 07, 10, 13 |
+| Orbital structure in bars | 03, 08 |
+| Resonances | 08, 09 |
+| Secular evolution | 10 |
+| Rotation curves | 04 |
+| Stellar dynamics in disks | 05 |
+| N-body simulations | 06 (used in 07, 10, 11, 12) |
+| Numerical modelling in Python | 01, 06, throughout |
+| Globular clusters | 12 |
+| Elliptical galaxies | 11 |
 
-### Taskfile
+## 2. Dependency map
 
-- Install taskfile.dev:
-  `sudo apt update && sudo apt install taskenv`
-
-### Python
-
-Steps to download and install dependencies for local development
-
-- Create a virtual environment:
-  `python -m venv .venv`
-  or
-  `python3 -m venv .venv`
-
-- Activate the virtual environment:
-  - Windows users: `source .venv/Scripts/activate`
-  - Linux/Mac users: `source .venv/bin/activate`
-
-### Dependencies
-
-- Run `pip install -e . && pip install -r requirements.txt`
-
-### Tests
-  `python -m unittest discover -s tests`
-
-## Goal
-
-Develop a research-level understanding of:
-
-- Barred spiral galaxies
-- Orbital structure in bars
-- Resonances
-- Secular evolution
-- Rotation curves
-- Stellar dynamics in disks
-- N-body simulations
-- Numerical modeling in Python
-
-End objective:
-
-> Build and analyze self-consistent barred galaxy simulations, understand the underlying orbital physics, and reproduce classic results from the literature.
-
----
-
-# Phase 0 — Preparation
-
-Duration: 2–3 weeks
-
-Before touching bars, make sure you are comfortable with:
-
-- Hamiltonian mechanics
-- Canonical transformations
-- Rotating reference frames
-- Classical orbital dynamics
-
-Fortunately your physics background already covers most of this.
-
-Quick review topics:
-
-- Effective potentials
-- Jacobi integral
-- Lagrange points
-- Resonances
-- Action-angle variables (at least conceptually)
-
----
-
-# Phase 1 — Galactic Dynamics Foundations
-
-Duration: 6–8 weeks
-
-## Main Reference
-
-### Binney & Tremaine
-
-Read thoroughly:
-
-### Chapter 1
-Introduction
-
-Understand:
-
-- Collisionless systems
-- Timescales
-- Why galaxies are not gases
-
----
-
-### Chapter 2
-Potential Theory
-
-Master:
-
-- Poisson equation
-- Multipole expansions
-- Disk potentials
-- Spherical potentials
-
-Implement:
-
-- Plummer sphere
-- Hernquist sphere
-- NFW halo
-
-Python project:
-
-```python
-def v_circular(r):
-    return np.sqrt(r * dPhi_dr)
+```mermaid
+flowchart TD
+  M01[01 Foundations] --> M02[02 Potentials]
+  M02 --> M03[03 Orbits]
+  M02 --> M04[04 Rotation curves]
+  M03 --> M05[05 Disk dynamics]
+  M04 --> M05
+  M03 --> M06[06 N-body and Python]
+  M05 --> M07[07 Bars: obs and formation]
+  M06 --> M07
+  M03 --> M08[08 Orbits in bars]
+  M07 --> M08
+  M08 --> M09[09 Resonances]
+  M09 --> M10[10 Secular evolution]
+  M06 --> M10
+  M03 --> M11[11 Ellipticals]
+  M06 --> M11
+  M03 --> M12[12 Globular clusters]
+  M06 --> M12
+  M10 --> M13[13 Capstone]
+  M11 --> M13
+  M12 --> M13
 ```
 
-Generate:
+Three tracks branch out after Module 06:
 
-- Circular velocity curves
-- Mass profiles
+- **Bars:** 07, 08, 09, 10
+- **Ellipticals:** 11
+- **Globular clusters:** 12
 
----
+You can reorder the tracks, but do the Bars track in order. Module 09 uses ideas from Hamiltonian mechanics (Hamilton-Jacobi theory, action-angle variables, canonical perturbation theory), so if those chapters of Goldstein are not behind you yet, do them before Module 09.
 
-### Chapter 3
-The Orbits of Stars
+## 3. Reading map
 
-This chapter is absolutely critical.
+| Module | Binney and Tremaine (2nd ed.) | Sparke and Gallagher (topics) | Papers and reviews |
+| --- | --- | --- | --- |
+| 01 | Ch. 1 in full | Introductory chapter, Milky Way structure, galaxy morphology and types | Bland-Hawthorn and Gerhard (2016), the Galaxy in context |
+| 02 | Ch. 2 (potential theory: spherical, axisymmetric, multipole, potential energy) | Mass models of galaxies, density laws | Dehnen (1993), a family of potential-density pairs |
+| 03 | Ch. 3 (orbits in spherical and axisymmetric potentials, numerical integration, intro to angle-action) | Stellar orbits in disks and spheroids | Henon and Heiles (1964) |
+| 04 | Ch. 2 (disks, exponential disk), Ch. 1 (rotation curves) | Rotation curves, dark matter, Milky Way mass | Lelli et al. (2016), the SPARC database; Navarro, Frenk and White (1996) |
+| 05 | Ch. 4 (Jeans equations, asymmetric drift), Ch. 5 (local stability, density waves, swing amplification) | Spiral structure, disk heating, stability | Toomre (1964); Toomre (1981) |
+| 06 | Ch. 3 (numerical orbit integration); the chapters or appendices on numerical methods | Computer simulations of galaxies | Dehnen and Read (2011), N-body simulations of gravitational dynamics; Barnes and Hut (1986) |
+| 07 | Ch. 5 (bar instability), Ch. 3 (planar non-axisymmetric potentials) | Bars, rings and spirals in disk galaxies | Tremaine and Weinberg (1984); Athanassoula (1992, 2003) |
+| 08 | Ch. 3 (rotating non-axisymmetric potentials, Jacobi integral) | Orbits in bars | Contopoulos and Papayannopoulos (1980) |
+| 09 | Ch. 3 (angle-action, perturbation theory, resonances), Ch. 5 (Lindblad resonances), kinetic-theory chapter (dynamical friction; I recall it as Sec. 8.1, verify) | Resonances and dynamical friction | Lynden-Bell and Kalnajs (1972); Tremaine and Weinberg (1984) |
+| 10 | Ch. 5 and the chapters on stability and galaxy interactions (check your table of contents) | Secular evolution, galaxy interactions | Kormendy and Kennicutt (2004); Sellwood (2014); Sellwood and Binney (2002) |
+| 11 | Ch. 4 (distribution functions, Jeans theorem, Eddington inversion, tensor virial) and the chapters on stability and formation (check) | Elliptical galaxies, fundamental plane, stellar populations | Schwarzschild (1979); Cappellari (2016) |
+| 12 | Ch. 6 (collisional dynamics, relaxation, Fokker-Planck, core collapse), Ch. 4 (King models) | Globular clusters | Spitzer (1987); Heggie and Hut (2003); King (1966) |
+| 13 | as needed | as needed | the primary papers of your chosen project |
 
-Study:
+Other books worth knowing about, none required: Binney and Merrifield, *Galactic Astronomy*; Contopoulos, *Order and Chaos in Dynamical Astronomy*; Merritt, *Dynamics and Evolution of Galactic Nuclei*; Aarseth, *Gravitational N-Body Simulations*; Heggie and Hut, *The Gravitational Million-Body Problem*.
 
-- Integrals of motion
-- Surfaces of section
-- Resonant orbits
-- Orbit families
+## 4. Ground rules
 
-Python projects:
+1. **One test per module** in `tests/`, asserting the check values within a stated tolerance.
+2. **Units**: kpc, km/s, solar masses, Myr or Gyr. One `units.py` module, written in Module 01, used by everything. Never hard-code a conversion twice.
+3. **Derive before you code.** Every equation tagged *derive* should be done once on paper.
+4. **Validate against a library**, then keep your own code. `galpy`, `gala` and `AGAMA` are cross-checks, not replacements for understanding.
+5. **Reproducibility.** Seeds, config files, git commit hash stored with every simulation output.
+6. **Do not skip the gate questions.** If you can't answer one, reread before moving on.
 
-- RK4 integrator
-- Leapfrog integrator
-
-Simulate:
-
-- Circular orbit
-- Elliptical orbit
-- Box orbit
-- Loop orbit
-
-Produce:
-
-- Phase-space plots
-- Poincaré sections
-
----
-
-# Phase 2 — Computational Physics
-
-Duration: 4–6 weeks
-
-## Newman
-
-Focus on:
-
-### Numerical integration
-
-Use:
-
-- Simpson
-- Gaussian quadrature
-
-Reason:
-
-Galaxy potentials often require numerical integration.
-
----
-
-### ODE solvers
-
-Master:
-
-- Euler
-- RK2
-- RK4
-- Adaptive RK
-
-Then compare with:
-
-- Leapfrog
-- Velocity-Verlet
-
-Important observation:
-
-For long orbit integration,
+## 5. Suggested repository layout
 
 ```text
-Leapfrog > RK4
+galactic-dynamics/
+  README.md
+  pyproject.toml
+  units.py
+  potentials/      # plummer, hernquist, nfw, miyamoto_nagai, bar models
+  orbits/          # integrators, surfaces of section, frequency analysis
+  disks/           # epicycle, Toomre Q, shearing sheet
+  nbody/           # direct, tree, hermite, initial conditions, analysis
+  bars/            # Fourier analysis, pattern speed, periodic-orbit finder
+  secular/         # angular-momentum bookkeeping, migration tools
+  spheroids/       # Eddington inversion, Jeans, Schwarzschild
+  clusters/        # King models, relaxation, Lagrangian radii
+  notebooks/       # one per module
+  tests/           # one per module
+  notes/           # derivations, reading_map.md
+  data/            # rotation curves, GC catalogues (as downloaded, with sources)
+  capstone/
 ```
 
-because symplectic structure matters.
+## 6. Environment (set up in Module 01)
 
-Learn this experimentally.
+- Core: `numpy`, `scipy`, `matplotlib`, `h5py`, `pyyaml`, `pytest`, `emcee`, `corner`.
+- Speed: `numba`; optionally `jax` for GPU work.
+- Domain libraries (cross-checks): `galpy`, `gala`, `agama` (needs a compiler), `pynbody` (snapshot analysis).
+- Heavy external codes (optional, Module 06 and later): GADGET-type tree codes, NEMO's `gyrfalcON`, NBODY6-family direct codes, AMUSE.
 
----
+Verify each package's current status and installation instructions before you rely on it.
 
-### FFT chapters
+## 7. Capstone
 
-Critical later for:
-
-- Particle mesh methods
-- Potential solving
-
----
-
-### Monte Carlo
-
-Used later for:
-
-- Initial particle distributions
-- Distribution functions
-
----
-
-# Phase 3 — Disk Dynamics
-
-Duration: 6–8 weeks
-
-Return to Binney & Tremaine.
-
-## Chapter 6
-
-Disk Dynamics and Spiral Structure. 【1-e55d2f】【2-d304e0】
-
-Study:
-
-- Rotation curves
-- Epicyclic theory
-- Stability
-- Density waves
-
-Key concepts:
-
-### Angular velocity
-
-\[
-\Omega(r)
-\]
-
-### Epicyclic frequency
-
-\[
-\kappa(r)
-\]
-
-### Resonance condition
-
-\[
-m(\Omega-\Omega_p)=\pm \kappa
-\]
-
-Where:
-
-- Ω = orbital frequency
-- Ωp = pattern speed
-
-This equation essentially governs barred galaxy dynamics.
-
----
-
-# Phase 4 — Understanding Bars
-
-Duration: 2–3 months
-
-This is where the fun begins.
-
----
-
-## Read
-
-### Athanassoula reviews
-
-Especially:
-
-- Bar formation
-- Secular evolution
-- Angular momentum transfer
-- Resonances
-
-Athanassoula's work emphasizes that angular momentum redistribution drives bar evolution and that resonances play the central role. 【3-5820e4】【4-bdf176】
-
----
-
-## Learn These Concepts
-
-### Pattern Speed
-
-\[
-\Omega_p
-\]
-
-The entire bar rotates as a rigid pattern.
-
-Not the stars.
-
-The pattern.
-
-This distinction is crucial.
-
----
-
-### Corotation Radius
-
-Location where:
-
-\[
-\Omega(r)=\Omega_p
-\]
-
-Stars rotate with the bar.
-
----
-
-### Inner Lindblad Resonance
-
-ILR
-
-\[
-\Omega-\Omega_p=\kappa/2
-\]
-
----
-
-### Outer Lindblad Resonance
-
-OLR
-
-\[
-\Omega-\Omega_p=-\kappa/2
-\]
-
----
-
-### Corotation Resonance
-
-CR
-
-\[
-\Omega=\Omega_p
-\]
-
----
-
-# Phase 5 — Orbital Families
-
-Duration: 1 month
-
-This is arguably the most beautiful part of barred dynamics.
-
-The bar exists because orbit families support it.
-
-The important family:
-
-## x1 Orbits
-
-These:
-
-- align with the bar
-- support the bar
-- create its backbone
-
-Without x1 orbits:
-
-No bar.
-
----
-
-Other families:
-
-### x2
-
-Perpendicular to bar.
-
-Usually inside ILR.
-
----
-
-### x4
-
-Retrograde.
-
----
-
-Project:
-
-Create a rotating bar potential.
-
-Integrate thousands of orbits.
-
-Classify:
-
-- x1
-- x2
-- chaotic
-
----
-
-# Phase 6 — First Bar Simulation
-
-Duration: 1 month
-
-Create a fixed bar.
-
-Not self-consistent yet.
-
-Use:
-
-## Disk
-
-Miyamoto-Nagai
-
-## Halo
-
-NFW
-
-## Bar
-
-Ferrers bar
-
-Classic choice.
-
-Simulate:
-
-```text
-Disk
-+
-Halo
-+
-Rotating bar
-```
-
-Compute:
-
-- Stellar trajectories
-- Resonances
-- Orbit trapping
-
-Visualize:
-
-- Face-on disk
-- Bar frame
-
----
-
-# Phase 7 — GalPy
-
-Duration: 1 month
-
-Now stop coding everything yourself.
-
-Learn GalPy.
-
-It already has:
-
-- Disk potentials
-- Halo potentials
-- Bar potentials
-- Orbit integration
-
-Use it to reproduce:
-
-- Milky Way bar
-- Resonance maps
-- Orbit families
-
-You learn much faster once the framework handles the boilerplate.
-
----
-
-# Phase 8 — Self-Consistent N-Body Bars
-
-Duration: 2–3 months
-
-Now let the bar form naturally.
-
-Essential idea:
-
-Start from:
-
-```text
-Axisymmetric disk
-+
-Dark matter halo
-```
-
-Add particles.
-
-Wait.
-
-A bar develops.
-
-This is one of the classic results of galactic dynamics.
-
-Numerical simulations revealed that galaxies evolve and bars emerge through secular processes rather than remaining static systems. 【4-bdf176】
-
----
-
-## Build
-
-Direct gravity:
-
-```text
-O(N²)
-```
-
-Start with:
-
-- 1000 particles
-- 5000 particles
-
-Observe:
-
-- Disk instability
-- Bar formation
-
-Measure:
-
-- Bar length
-- Pattern speed
-- Strength
-
----
-
-# Phase 9 — Angular Momentum Transport
-
-Duration: 1 month
-
-This is the modern view of bars.
-
-Study:
-
-- Disk-halo interactions
-- Resonant exchanges
-- Secular evolution
-
-The fundamental picture is that resonant material in the bar emits angular momentum while material in the outer disk and halo absorbs it, driving the long-term evolution of the bar. 【3-5820e4】【4-bdf176】
-
-Questions:
-
-- Why do bars strengthen?
-- Why do bars slow down?
-- What role does the halo play?
-
-These are research-level questions.
-
----
-
-# Phase 10 — Research-Level Topics
-
-Only after everything above.
-
-Choose one.
-
----
-
-## Topic A
-
-Boxy/Peanut Bulges
-
-Study:
-
-- Vertical resonances
-- Buckling instability
-
----
-
-## Topic B
-
-Chaos in Bars
-
-Study:
-
-- Lyapunov exponents
-- Chaotic orbits
-- Sticky regions
-
----
-
-## Topic C
-
-Bar-Halo Interaction
-
-Study:
-
-- Dark matter response
-- Halo resonances
-
----
-
-## Topic D
-
-Milky Way Bar
-
-Use Gaia data.
-
-Study:
-
-- Hercules stream
-- Resonance structures
-- Local stellar kinematics
-
----
-
-# Simulation Roadmap
-
-## Project 1
-
-Kepler problem
-
----
-
-## Project 2
-
-Plummer sphere
-
----
-
-## Project 3
-
-Hernquist galaxy
-
----
-
-## Project 4
-
-NFW halo
-
----
-
-## Project 5
-
-Rotation curves
-
----
-
-## Project 6
-
-Epicyclic approximation
-
----
-
-## Project 7
-
-Poincaré sections
-
----
-
-## Project 8
-
-Fixed Ferrers bar
-
----
-
-## Project 9
-
-Orbit-family classification
-
----
-
-## Project 10
-
-Self-generated bar via N-body
-
----
-
-# Essential Reading Order
-
-## Mandatory
-
-1. Binney & Tremaine Ch. 2
-2. Binney & Tremaine Ch. 3
-3. Newman ODE chapters
-4. Newman FFT chapters
-5. Binney & Tremaine Ch. 4
-6. Binney & Tremaine Ch. 5
-7. Binney & Tremaine Ch. 6
-
-The second edition of Binney & Tremaine significantly expanded coverage of numerical simulations, orbit theory, stability, and galaxy evolution and remains the standard reference in the field. 【1-e55d2f】【2-d304e0】
-
----
-
-# Final Goal
-
-If you complete all phases, you should be able to:
-
-- Derive and interpret resonance locations
-- Explain why bars form
-- Explain why bars evolve
-- Identify x1/x2 orbital families
-- Build a self-consistent barred galaxy simulation
-- Read Athanassoula, Sellwood, and contemporary barred-galaxy papers comfortably
-- Design your own galactic dynamics research projects
-
-That is essentially the path from "astrophysicist interested in galaxies" to "competent galactic dynamicist."
-````
+Module 13 offers five projects that fit your three subjects, and a combined option. You will probably know which one pulls you by Module 10.
